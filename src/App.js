@@ -1,10 +1,13 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import { Carousel, Modal } from 'react-bootstrap';
+import axios from 'axios';
 import BestBooks from './BestBooks';
 import About from './About'; // Assuming you have an About component file
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 
 const App = () => {
   return (
@@ -15,6 +18,7 @@ const App = () => {
           <Route
             exact path="/"
             element={<BestBooks/>}
+            style={<Carousel/>}
           />
           {/* PLACEHOLDER: aa a route with a path of /'about' that renders the 'About' component*/}
           <Route
@@ -22,7 +26,7 @@ const App = () => {
             element={<About/>}
           />
         </Routes>
-        <Footer />
+        <Footer/>
       </Router>
     </>
   );
