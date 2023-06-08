@@ -11,7 +11,7 @@ function BestBooks() {
   const [editBookData, setEditBookData] = useState({ id: "", title: "", description: "" });
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-
+  const [headerObject, setHeaderObject] = useState()
   
   const fetchBooks = async () => {
     await axios.get('http://localhost:3001/books/')
@@ -24,7 +24,7 @@ function BestBooks() {
   };
 
   const addBook = async () => {
-    await axios.post('http://localhost:3001/books/', newBookData)
+    await axios.post('http://localhost:3001/books/', {data : newBookData, headers : headerObject})
       .then(response => {
         console.log('Book added successfully');
         setShowAddModal(false);
@@ -47,7 +47,7 @@ function BestBooks() {
   };
 
   const updateBook = async() => {
-    await axios.put(`http://localhost:3001/books/${editBookData.id}`, editBookData)
+    await axios.put(`http://localhost:3001/books/${editBookData.id}`, {data: editBookData, headers: headerObject})
       .then(response => {
         console.log('Book updated successfully');
         setShowEditModal(false);
@@ -79,12 +79,13 @@ function BestBooks() {
   
   
   const { isAuthenticated, user, logout, getAccessTokenSilently } = useAuth0()
-  
+
   async function SendRequest(){
     let accessToken = await getAccessTokenSilently();
     let header = {
       Authorization: `Bearer ${accessToken}`
     }
+    setHeaderObject(header)
     console.log(accessToken)
     await axios.get("http://localhost:3001/books", {headers:header}).catch((error) => {
       console.error(error)
