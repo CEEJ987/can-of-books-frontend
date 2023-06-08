@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Carousel, Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './BestBooks.css'; // Import the CSS file for custom styling
 
@@ -69,10 +70,16 @@ function BestBooks() {
     setEditBookData({ id: book._id, title: book.title, description: book.description });
     setShowEditModal(true);
   };
+  
+  const { logout, isAuthenticated } = useAuth0();
 
   return (
     <div className="book-carousel-container">
-      <h2>My Essential Lifelong Learning & Formation Shelf</h2>
+      {isAuthenticated && (
+        <div>
+          <h2>My Essential Lifelong Learning & Formation Shelf</h2>
+        </div>
+      )}
 
       {books.length > 0 ? (
         <Carousel>
