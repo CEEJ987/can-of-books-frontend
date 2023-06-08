@@ -12,12 +12,9 @@ function BestBooks() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
-  useEffect(() => {
-    fetchBooks();
-  }, []);
-
-  const fetchBooks = () => {
-    axios.get('https://canofbooksbackend.onrender.com/books/')
+  
+  const fetchBooks = async () => {
+    await axios.get('http://localhost:3001/books/')
       .then(response => {
         setBooks(response.data);
       })
@@ -26,8 +23,8 @@ function BestBooks() {
       });
   };
 
-  const addBook = () => {
-    axios.post('https://canofbooksbackend.onrender.com/books/', newBookData)
+  const addBook = async () => {
+    await axios.post('http://localhost:3001/books/', newBookData)
       .then(response => {
         console.log('Book added successfully');
         setShowAddModal(false);
@@ -38,8 +35,8 @@ function BestBooks() {
       });
   };
 
-  const deleteBook = (bookId) => {
-    axios.delete(`https://canofbooksbackend.onrender.com/books/${bookId}`)
+  const deleteBook = async (bookId) => {
+   await axios.delete(`http://localhost:3001/books/${bookId}`)
       .then(response => {
         console.log('Book deleted successfully');
         fetchBooks();
@@ -49,8 +46,8 @@ function BestBooks() {
       });
   };
 
-  const updateBook = () => {
-    axios.put(`https://canofbooksbackend.onrender.com/books/${editBookData.id}`, editBookData)
+  const updateBook = async() => {
+    await axios.put(`http://localhost:3001/books/${editBookData.id}`, editBookData)
       .then(response => {
         console.log('Book updated successfully');
         setShowEditModal(false);
@@ -60,6 +57,15 @@ function BestBooks() {
         console.error('Failed to update book:', error);
       });
   };
+
+  useEffect(() => {
+    async function fetchData () {
+    await SendRequest();
+    await fetchBooks();
+}
+ fetchData()
+}, []);
+
 
   const openAddModal = () => {
     setNewBookData({ title: "", description: "" });
@@ -72,15 +78,18 @@ function BestBooks() {
   };
   
   
-  const { isAuthenticated, user, logout, getAccessTokenSilenty } = useAuth0()
+  const { isAuthenticated, user, logout, getAccessTokenSilently } = useAuth0()
+  
   async function SendRequest(){
-    let accessToken = await getAccessTokenSilenty
-    let headers = {
+    let accessToken = await getAccessTokenSilently();
+    let header = {
       Authorization: `Bearer ${accessToken}`
     }
-    await axios.get("http://localhost:3001/books", headers=headers)
+    console.log(accessToken)
+    await axios.get("http://localhost:3001/books", {headers:header}).catch((error) => {
+      console.error(error)
+    })
   }
-  SendRequest();
 
   return (
     <div className="book-carousel-container">
