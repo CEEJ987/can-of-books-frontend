@@ -71,7 +71,16 @@ function BestBooks() {
     setShowEditModal(true);
   };
   
-  const { logout, isAuthenticated } = useAuth0();
+  
+  const { isAuthenticated, user, logout, getAccessTokenSilenty } = useAuth0()
+  async function SendRequest(){
+    let accessToken = await getAccessTokenSilenty
+    let headers = {
+      Authorization: `Bearer ${accessToken}`
+    }
+    await axios.get("http://localhost:3001/books", headers=headers)
+  }
+  SendRequest();
 
   return (
     <div className="book-carousel-container">
