@@ -72,9 +72,9 @@ function BestBooks() {
   };
   
   
-  const { isAuthenticated, user, logout, getAccessTokenSilenty } = useAuth0()
+  const { isAuthenticated, user, logout, getAccessTokenSilent } = useAuth0()
   async function SendRequest(){
-    let accessToken = await getAccessTokenSilenty
+    let accessToken = await getAccessTokenSilent
     let headers = {
       Authorization: `Bearer ${accessToken}`
     }
