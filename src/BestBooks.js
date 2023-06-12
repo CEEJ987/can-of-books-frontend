@@ -12,7 +12,7 @@ function BestBooks() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [headerObject, setHeaderObject] = useState()
-  const [server, setServer] = useState(process.env.REACT_APP_DEV_SERVER);
+  const [server, setServer] = useState(process.env.REACT_APP_PROD);
 
 
   const fetchBooks = async () => {
