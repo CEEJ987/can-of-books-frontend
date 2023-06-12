@@ -26,6 +26,7 @@ function BestBooks() {
   };
 
   const addBook = async () => {
+    console.log('clicked')
     await axios.post(`${server}/books/`, {data : newBookData, headers : headerObject})
       .then(response => {
         console.log('Book added successfully');
