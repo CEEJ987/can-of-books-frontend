@@ -12,9 +12,11 @@ function BestBooks() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [headerObject, setHeaderObject] = useState()
-  
+  const [server, setServer] = useState(process.env.REACT_APP_DEV_SERVER);
+
+
   const fetchBooks = async () => {
-    await axios.get('http://localhost:3001/books/')
+    await axios.get(`${server}/books/`)
       .then(response => {
         setBooks(response.data);
       })
@@ -24,7 +26,7 @@ function BestBooks() {
   };
 
   const addBook = async () => {
-    await axios.post('http://localhost:3001/books/', {data : newBookData, headers : headerObject})
+    await axios.post(`${server}/books/`, {data : newBookData, headers : headerObject})
       .then(response => {
         console.log('Book added successfully');
         setShowAddModal(false);
@@ -36,7 +38,7 @@ function BestBooks() {
   };
 
   const deleteBook = async (bookId) => {
-   await axios.delete(`http://localhost:3001/books/${bookId}`)
+   await axios.delete(`${server}/books/${bookId}`)
       .then(response => {
         console.log('Book deleted successfully');
         fetchBooks();
@@ -47,7 +49,7 @@ function BestBooks() {
   };
 
   const updateBook = async() => {
-    await axios.put(`http://localhost:3001/books/${editBookData.id}`, {data: editBookData, headers: headerObject})
+    await axios.put(`${server}/books/${editBookData.id}`, {data: editBookData, headers: headerObject})
       .then(response => {
         console.log('Book updated successfully');
         setShowEditModal(false);
@@ -59,6 +61,13 @@ function BestBooks() {
   };
 
   useEffect(() => {
+    if ( window.location.hostname == "localhost") {
+      setServer(process.env.REACT_APP_DEV_SERVER)
+    } else {
+      setServer(process.env.REACT_APP_PROD);
+    }
+    console.log(server)
+
     async function fetchData () {
     await SendRequest();
     await fetchBooks();
@@ -87,7 +96,7 @@ function BestBooks() {
     }
     setHeaderObject(header)
     console.log(accessToken)
-    await axios.get("http://localhost:3001/books", {headers:header}).catch((error) => {
+    await axios.get(`${server}/books`, {headers:header}).catch((error) => {
       console.error(error)
     })
   }
