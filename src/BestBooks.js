@@ -16,7 +16,11 @@ function BestBooks() {
 
 
   const fetchBooks = async () => {
-    await axios.get(`${server}/books/`)
+    let accessToken = await getAccessTokenSilently();
+    let header = {
+      Authorization: `Bearer ${accessToken}`
+    }
+    await axios.get(`${server}/books/`, {headers:header})
       .then(response => {
         setBooks(response.data);
       })
@@ -27,7 +31,11 @@ function BestBooks() {
 
   const addBook = async () => {
     console.log('clicked')
-    await axios.post(`${server}/books/`, {data : newBookData, headers : headerObject})
+    let accessToken = await getAccessTokenSilently();
+    let header = {
+      Authorization: `Bearer ${accessToken}`
+    }
+    await axios.post(`${server}/books/`,{headers:header}, {data : newBookData, headers : headerObject})
       .then(response => {
         console.log('Book added successfully');
         setShowAddModal(false);
@@ -39,7 +47,11 @@ function BestBooks() {
   };
 
   const deleteBook = async (bookId) => {
-   await axios.delete(`${server}/books/${bookId}`)
+    let accessToken = await getAccessTokenSilently();
+    let header = {
+      Authorization: `Bearer ${accessToken}`
+    }
+   await axios.delete(`${server}/books/${bookId}`, {headers:header})
       .then(response => {
         console.log('Book deleted successfully');
         fetchBooks();
@@ -50,7 +62,11 @@ function BestBooks() {
   };
 
   const updateBook = async() => {
-    await axios.put(`${server}/books/${editBookData.id}`, {data: editBookData, headers: headerObject})
+    let accessToken = await getAccessTokenSilently();
+    let header = {
+      Authorization: `Bearer ${accessToken}`
+    }
+    await axios.put(`${server}/books/${editBookData.id}`,{headers:header}, {data: editBookData, headers: headerObject})
       .then(response => {
         console.log('Book updated successfully');
         setShowEditModal(false);
